@@ -14,7 +14,7 @@ class student_table_printer
 
 		std::vector<std::string> data;
 		size_t max_symbols{};
-	};aaa
+	};
 	static constexpr size_t cols_size = 5;
 	static constexpr size_t column_offset = 2;
 	column_table cols_[cols_size];
