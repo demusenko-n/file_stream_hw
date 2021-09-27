@@ -1,5 +1,5 @@
 COMPILER = g++
-SOURCES = main.cpp
+SOURCES = main.cpp object_stream_reader.h student_table_printer.cpp student.cpp
 EXEC_FILENAME = prog
 
 all: compile
