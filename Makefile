@@ -1,6 +1,6 @@
 COMPILER = g++
-SOURCES = main.cpp object_stream_reader.cpp student_table_printer.cpp student.cpp
-EXEC_FILENAME = prog
+SOURCES = main.cpp object_stream_reader.h student_table_printer.cpp student.cpp
+EXEC_FILENAME = prog.exe
 
 all: compile
 run: compile

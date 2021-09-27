@@ -26,7 +26,7 @@ student_table_printer::student_table_printer(const std::vector<student>& student
 void student_table_printer::add_student(const student& student)
 {
 	const std::string _columns[5] = {
-		(student.is_succeeded() ? "+" : "-"),
+		(student.is_succeeded() ? "    +" : "    -"),
 		student.get_name(),
 		student.get_surname(),
 		std::to_string(student.get_average_mark()),
