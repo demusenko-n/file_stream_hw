@@ -15,6 +15,7 @@ public:
 	const std::vector<T>& get_instances();
 };
 
+
 template <class T>
 object_stream_reader<T>::object_stream_reader(std::ifstream& stream)
 {
