@@ -46,13 +46,38 @@ int student::get_attended_lessons() const
 	return attended_lessons_;
 }
 
-bool student::is_succeeded() const
+char student::is_succeeded() const
 {
-	return average_mark_ > 4 && attended_lessons_ > 5;
+	return average_mark_ > 4 && attended_lessons_ > 5 ? '+' : '-';
 }
 
 student::student()
 {
 	average_mark_ = 0;
 	attended_lessons_ = 0;
+}
+
+std::ostream& operator<<(std::ostream& stream, const student& student)
+{
+	return stream << student.get_name() << ','
+		<< student.get_surname() << ','
+		<< student.get_average_mark() << ','
+		<< student.get_attended_lessons() << std::endl;
+}
+
+std::istream& operator>>(std::istream& stream, student& student)
+{
+	std::string name, surname, av_mark, at_lessons;
+	if (!std::getline(stream, name, ',') ||
+		!std::getline(stream, surname, ',') ||
+		!std::getline(stream, av_mark, ',') ||
+		!std::getline(stream, at_lessons))
+	{
+		throw std::exception();
+	}
+	student.set_name(name);
+	student.set_surname(surname);
+	student.set_average_mark(std::stof(av_mark));
+	student.set_attended_lessons(std::stoi(at_lessons));
+	return stream;
 }

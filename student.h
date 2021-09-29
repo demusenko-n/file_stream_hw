@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include <fstream>
+
 
 class student
 {
@@ -28,5 +30,9 @@ public:
 
 	int get_attended_lessons() const;
 
-	bool is_succeeded() const;
+	char is_succeeded() const;
 };
+
+std::ostream& operator<<(std::ostream& stream, const student& student);
+
+std::istream& operator>>(std::istream& stream, student& student);

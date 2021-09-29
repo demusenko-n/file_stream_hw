@@ -2,49 +2,21 @@
 #include <fstream>
 #include <string>
 #include <vector>
+
+#include "field.h"
+#include "field_format.h"
+#include "field_typed.h"
 #include "student.h"
 #include "object_stream_reader.h"
-#include "student_table_printer.h"
+#include "table_printer.h"
 using namespace std;
 
-
-ostream& operator<<(ostream& stream, const student& student)
-{
-	return stream << student.get_name() << ','
-		<< student.get_surname() << ','
-		<< student.get_average_mark() << ','
-		<< student.get_attended_lessons() << endl;
-}
-istream& operator>>(istream& stream, student& student)
-{
-	string name, surname, av_mark, at_lessons;
-	if (!getline(stream, name, ',') ||
-		!getline(stream, surname, ',') ||
-		!getline(stream, av_mark, ',') ||
-		!getline(stream, at_lessons))
-	{
-		throw exception();
-	}
-	student.set_name(name);
-	student.set_surname(surname);
-	student.set_average_mark(stof(av_mark));
-	student.set_attended_lessons(stoi(at_lessons));
-	return stream;
-}
 
 
 bool try_open_file(const char* dir, ifstream& destination)
 {
 	destination.open(dir);
 	return destination.is_open();
-}
-
-void main_func(ifstream& in)
-{
-	object_stream_reader<student> reader(in);
-	reader.read_all_objects();
-	vector<student> students = reader.get_instances();
-
 }
 
 int main()
@@ -61,17 +33,20 @@ int main()
 	object_stream_reader<student> reader(in);
 	reader.read_all_objects();
 	in.close();
-	vector<student> students = reader.get_instances();
 
-	string headers[5] = {
-		"Succeeded",
-		"Name",
-		"Surname",
-		"Avg mark",
-		"Attended"
+	const vector<student*> students = reader.get_instances();
+
+	const vector<field_format<student>> fields =
+	{
+		field_format <student>(new field_typed<student, char>(&student::is_succeeded, "Succeeded"), ALIGN_CENTER),
+		field_format <student>(new field_typed<student, string>(&student::get_name, "Name"),ALIGN_LEFT),
+		field_format <student>(new field_typed<student, string>(&student::get_surname, "Surname"),ALIGN_LEFT),
+		field_format <student>(new field_typed<student, float>(&student::get_average_mark, "Avg mark"),ALIGN_LEFT),
+		field_format <student>(new field_typed<student, int>(&student::get_attended_lessons, "Attended"), ALIGN_LEFT)
 	};
 
-	student_table_printer printer(students, headers);
+	table_printer<student> printer(fields, students);
 	cout << printer.to_string() << endl;
+
 	return EXIT_SUCCESS;
 }
